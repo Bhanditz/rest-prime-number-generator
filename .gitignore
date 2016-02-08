@@ -31,4 +31,6 @@ bower_components
 /target
 *.iml
 .project
+/mvnw.cmd
+/mvnw
 .classpath

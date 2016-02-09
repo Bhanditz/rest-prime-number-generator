@@ -10,19 +10,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PrimesServiceImpl implements PrimesService {
 
-    Map<String, List<PrimesResult>> resultMap = new HashMap<>();
+    Map<String, PrimesResult> resultMap = new HashMap<>();
 
     @Autowired
     private PrimesGeneratorHarness primesGeneratorHarness;
 
     @Override
+    public List<PrimesResult> getPrimesResults() {
+        return this.resultMap.values()
+                .stream()
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<PrimesResult> getPrimesResult(final String resultId) {
+        return this.resultMap.values()
+                .stream()
+                .filter(r -> r.getResultId().equals(resultId))
+                .findAny();
+    }
+
+    @Override
     public PrimesResult generatePrime(String upperLimit, Optional<String> algorithm) {
         PrimesResult primesResult = validatePrimesInput(upperLimit, algorithm);
-        primesGeneratorHarness.queueForProcessing(primesResult);
+        this.primesGeneratorHarness.queueForProcessing(primesResult);
         return primesResult;
     }
 

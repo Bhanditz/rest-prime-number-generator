@@ -5,9 +5,9 @@ import java.util.List;
 
 class IterativePrimesGenerator implements PrimesGenerator {
     @Override
-    public List<Long> generatePrimes(Long upperRange) {
+    public List<Long> generatePrimes(Long upperLimit) {
         List<Long> primes = new ArrayList<>();
-        for (long current = 2; current <= upperRange; current++) {
+        for (long current = 2; current <= upperLimit; current++) {
             long sqrRoot = (long) Math.sqrt(current);
             boolean isPrime = true;
             for (long i = 2; i <= sqrRoot; i++) {

@@ -13,8 +13,8 @@ class ForkJoinPrimesGenerator extends RecursiveTask<List<Long>> implements Prime
     private Long lowerRange;
 
     @Override
-    public List<Long> generatePrimes(Long upperRange) {
-        ForkJoinPrimesGenerator forkJoinPrimesGenerator = new ForkJoinPrimesGenerator(2L, upperRange);
+    public List<Long> generatePrimes(Long upperLimit) {
+        ForkJoinPrimesGenerator forkJoinPrimesGenerator = new ForkJoinPrimesGenerator(2L, upperLimit);
         return forkJoinPrimesGenerator.compute();
     }
 

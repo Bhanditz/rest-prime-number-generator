@@ -1,12 +1,16 @@
 package com.skua.primes.service.primesgenerator;
 
+import com.skua.primes.domain.PrimesResult;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
-public class PrimesGeneratorFactory {
+@Component
+public class PrimesGeneratorHarness {
 
-    public List<Long> generatePrimes(PrimesGenerator.PrimesGeneratorAlgo algo, Long upperRange) {
+    public List<Long> generatePrimes(Long upperLimit, PrimesGenerator.PrimesAlgorithm algorithm) {
         PrimesGenerator primesGenerator = null;
-        switch (algo) {
+        switch (algorithm) {
             case FORK_JOIN:
                 primesGenerator = new ForkJoinPrimesGenerator();
                 break;
@@ -20,6 +24,10 @@ public class PrimesGeneratorFactory {
                 primesGenerator = new ParallelStreamPrimesGenerator();
                 break;
         }
-        return primesGenerator.generatePrimes(upperRange);
+        return primesGenerator.generatePrimes(upperLimit);
+    }
+
+    public void queueForProcessing(PrimesResult primesResult) {
+
     }
 }

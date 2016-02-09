@@ -6,9 +6,9 @@ import java.util.stream.LongStream;
 
 class StreamPrimesGenerator implements PrimesGenerator {
     @Override
-    public List<Long> generatePrimes(Long upperRange) {
+    public List<Long> generatePrimes(Long upperLimit) {
         return LongStream
-                .rangeClosed(2L, upperRange)
+                .rangeClosed(2L, upperLimit)
                 .filter(i -> isPrime(i))
                 .boxed()
                 .collect(Collectors.toList());

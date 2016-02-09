@@ -2,13 +2,10 @@ package com.skua.primes.service.primesgenerator;
 
 import java.util.List;
 
-/**
- * Created by kunwar.singh on 09/02/2016.
- */
 public interface PrimesGenerator {
-    List<Long> generatePrimes(Long upperRange);
+    List<Long> generatePrimes(Long upperLimit);
 
-    enum PrimesGeneratorAlgo {
+    enum PrimesAlgorithm {
         FORK_JOIN, ITERATIVE, PARALLEL_STREAM, STREAM;
     }
 }

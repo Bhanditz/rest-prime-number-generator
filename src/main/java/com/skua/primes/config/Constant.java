@@ -1,4 +1,4 @@
-package com.skua.prime.generator.config;
+package com.skua.primes.config;
 
 public class Constant {
 

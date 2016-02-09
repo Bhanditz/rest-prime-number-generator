@@ -1,4 +1,4 @@
-package com.skua.prime.generator.config;
+package com.skua.primes.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

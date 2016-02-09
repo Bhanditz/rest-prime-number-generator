@@ -1,6 +1,6 @@
-package com.skua.prime.generator;
+package com.skua.primes;
 
-import com.skua.prime.generator.config.Constant;
+import com.skua.primes.config.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

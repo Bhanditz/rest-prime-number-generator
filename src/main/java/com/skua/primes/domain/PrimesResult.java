@@ -1,13 +1,13 @@
-package com.skua.prime.generator.domain;
+package com.skua.primes.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrimeNumberResult {
+public class PrimesResult {
     private final Long endRange;
     private final List<Long> primeNumbers;
 
-    public PrimeNumberResult(Long limit) {
+    public PrimesResult(Long limit) {
         this.endRange = limit;
         this.primeNumbers = new ArrayList<>();
     }

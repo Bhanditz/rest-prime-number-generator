@@ -52,6 +52,7 @@ public class PrimesServiceImpl implements PrimesService {
         resultCache.values()
                 .stream()
                 .filter(p -> p.getCreateTime().compareTo(LocalDateTime.now().minusMinutes(intervalInMinutes)) > 0)
+                .map(PrimesResult::getResultId)
                 .forEach(k -> resultCache.remove(k));
     }
 

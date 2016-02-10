@@ -6,6 +6,7 @@ import com.skua.primes.service.primesgenerator.PrimesGeneratorHarness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,21 +16,21 @@ import java.util.stream.Collectors;
 @Service
 public class PrimesServiceImpl implements PrimesService {
 
-    Map<String, PrimesResult> resultMap = new HashMap<>();
+    Map<String, PrimesResult> resultCache = new HashMap<>();
 
     @Autowired
     private PrimesGeneratorHarness primesGeneratorHarness;
 
     @Override
     public List<PrimesResult> getPrimesResults() {
-        return this.resultMap.values()
+        return this.resultCache.values()
                 .stream()
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<PrimesResult> getPrimesResult(final String resultId) {
-        return this.resultMap.values()
+        return this.resultCache.values()
                 .stream()
                 .filter(r -> r.getResultId().equals(resultId))
                 .findAny();
@@ -39,7 +40,19 @@ public class PrimesServiceImpl implements PrimesService {
     public PrimesResult generatePrime(String upperLimit, Optional<String> algorithm) {
         PrimesResult primesResult = validatePrimesInput(upperLimit, algorithm);
         this.primesGeneratorHarness.queueForProcessing(primesResult);
+        resultCache.put(primesResult.getResultId(), primesResult);
         return primesResult;
+    }
+
+    /*
+    * Remove objects which are older than given interval
+    * */
+    @Override
+    public void pruneCache(long interval) {
+        resultCache.values()
+                .stream()
+                .filter(p -> p.getCreateTime().compareTo(LocalDateTime.now().minusMinutes(interval)) > 0)
+                .forEach(k -> resultCache.remove(k));
     }
 
     private PrimesResult validatePrimesInput(String upperLimit, Optional<String> algorithm) {

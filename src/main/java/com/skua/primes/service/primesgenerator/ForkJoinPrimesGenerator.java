@@ -9,32 +9,38 @@ class ForkJoinPrimesGenerator extends RecursiveTask<List<Long>> implements Prime
 
     public static final long THRESHOLD = 10_000;
 
-    private Long upperRange;
-    private Long lowerRange;
+    private final Long upperLimit;
+    private final Long lowerLimit;
 
     @Override
-    public List<Long> generatePrimes(Long upperLimit) {
+    public List<Long> generatePrimes() {
         ForkJoinPrimesGenerator forkJoinPrimesGenerator = new ForkJoinPrimesGenerator(2L, upperLimit);
         return forkJoinPrimesGenerator.compute();
     }
 
-    ForkJoinPrimesGenerator() {
+    @Override
+    public Long getUpperLimit() {
+        return this.upperLimit;
     }
 
-    private ForkJoinPrimesGenerator(Long lowerRange, Long upperRange) {
-        this.upperRange = upperRange;
-        this.lowerRange = lowerRange;
+    ForkJoinPrimesGenerator(Long upperLimit) {
+        this(2L, upperLimit);
+    }
+
+    private ForkJoinPrimesGenerator(Long lowerLimit, Long upperLimit) {
+        this.upperLimit = upperLimit;
+        this.lowerLimit = lowerLimit;
     }
 
     @Override
     protected List<Long> compute() {
-        Long length = upperRange - lowerRange;
+        Long length = upperLimit - lowerLimit;
         if (length <= THRESHOLD) {
             return computeSequentially();
         }
-        ForkJoinPrimesGenerator leftTask = new ForkJoinPrimesGenerator(lowerRange, lowerRange + length / 2);
+        ForkJoinPrimesGenerator leftTask = new ForkJoinPrimesGenerator(lowerLimit, lowerLimit + length / 2);
         leftTask.fork();
-        ForkJoinPrimesGenerator rightTask = new ForkJoinPrimesGenerator(lowerRange + length / 2, upperRange);
+        ForkJoinPrimesGenerator rightTask = new ForkJoinPrimesGenerator(lowerLimit + length / 2, upperLimit);
         List<Long> rightResult = rightTask.compute();
         List<Long> leftResult = leftTask.join();
         rightResult.addAll(leftResult);
@@ -44,14 +50,14 @@ class ForkJoinPrimesGenerator extends RecursiveTask<List<Long>> implements Prime
     private List<Long> computeSequentially() {
         final List<Long> primes = new ArrayList<>();
         LongStream
-                .iterate(2L, i -> i + 1)
+                .iterate(lowerLimit, i -> i + 1)
                 .filter(i -> {
                     for (Long prime : primes)
                         if (i % prime == 0)
                             return false;
                     return true;
                 })
-                .limit(upperRange)
+                .limit(upperLimit)
                 .forEach(primes::add);
         return primes;
     }

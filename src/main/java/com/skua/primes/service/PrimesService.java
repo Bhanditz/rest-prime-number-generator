@@ -12,4 +12,6 @@ public interface PrimesService {
     Optional<PrimesResult> getPrimesResult(String resultId);
 
     PrimesResult generatePrime(String upperLimit, Optional<String> algorithm);
+
+    void pruneCache(long interval);
 }

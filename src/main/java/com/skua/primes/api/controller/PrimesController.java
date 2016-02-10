@@ -36,7 +36,7 @@ public class PrimesController {
     @RequestMapping(value = "/find/{resultId}", method = RequestMethod.GET)
     public ResponseEntity<PrimesResult> getGeneratedPrimesById(@PathVariable("resultId") String resultId) {
         Optional<PrimesResult> primesResultOptional = this.primesService.getPrimesResult(resultId);
-        PrimesResult primesResult = null;
+        PrimesResult primesResult;
         if (!primesResultOptional.isPresent()) {
             primesResult = new PrimesResult(null);
             primesResult.setErrorMessage("Result Not Found");
@@ -48,7 +48,7 @@ public class PrimesController {
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)
     public ResponseEntity<List<PrimesResult>> getGeneratedPrimes() {
-        return new ResponseEntity<List<PrimesResult>>(this.primesService.getPrimesResults(), HttpStatus.OK);
+        return new ResponseEntity<>(this.primesService.getPrimesResults(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/algorithmNames", method = RequestMethod.GET)

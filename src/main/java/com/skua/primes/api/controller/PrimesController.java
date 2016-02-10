@@ -25,12 +25,12 @@ public class PrimesController {
 
     @RequestMapping(value = "/algorithm/default/value/{upperLimit}", method = RequestMethod.GET)
     public ResponseEntity<PrimesResult> generatePrimesWithDefaultAlgorithm(@PathVariable("upperLimit") String upperLimit) {
-        return new ResponseEntity<PrimesResult>(this.primesService.generatePrime(upperLimit, Optional.empty()), HttpStatus.OK);
+        return new ResponseEntity<>(this.primesService.generatePrime(upperLimit, Optional.empty()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/algorithm/{algorithmName}/value/{upperLimit}", method = RequestMethod.GET)
     public ResponseEntity<PrimesResult> generatePrimes(@PathVariable("algorithmName") String algorithmName, @PathVariable("upperLimit") String upperLimit) {
-        return new ResponseEntity<PrimesResult>(this.primesService.generatePrime(upperLimit, Optional.of(algorithmName.toUpperCase())), HttpStatus.OK);
+        return new ResponseEntity<>(this.primesService.generatePrime(upperLimit, Optional.of(algorithmName.toUpperCase())), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/find/{resultId}", method = RequestMethod.GET)
@@ -43,7 +43,7 @@ public class PrimesController {
         } else {
             primesResult = primesResultOptional.get();
         }
-        return new ResponseEntity<PrimesResult>(primesResult, HttpStatus.OK);
+        return new ResponseEntity<>(primesResult, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)
@@ -53,7 +53,7 @@ public class PrimesController {
 
     @RequestMapping(value = "/algorithmNames", method = RequestMethod.GET)
     public ResponseEntity<List<String>> getPrimesAlgorithmNames() {
-        return new ResponseEntity<List<String>>(
+        return new ResponseEntity<>(
                 Stream.of(PrimesGenerator.PrimesAlgorithm.values())
                         .map(PrimesGenerator.PrimesAlgorithm::name)
                         .collect(Collectors.toList())

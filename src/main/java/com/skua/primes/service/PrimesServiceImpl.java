@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,13 +49,16 @@ public class PrimesServiceImpl implements PrimesService {
     * */
     @Override
     public void pruneCacheOlderThanInterval(long intervalInMinutes) {
+        List<String> keys = new ArrayList<>();
         resultCache.values()
                 .stream()
-                .filter(p -> p.getCreateTime().compareTo(LocalDateTime.now().minusMinutes(intervalInMinutes)) > 0)
+                .filter(p -> p.getCreateTime().compareTo(LocalDateTime.now().minusMinutes(intervalInMinutes)) < 0)
                 .forEach(k -> {
-                    log.info("Removing Key Created At {}", k.getCreateTime());
-                    resultCache.remove(k.getResultId());
+                    log.info("Removing Key {} Created At {}", k.getResultId(), k.getCreateTime());
+                    keys.add(k.getResultId());
                 });
+        keys.stream()
+                .forEach(k -> resultCache.remove(k));
     }
 
     private PrimesResult validatePrimesInput(String upperLimit, Optional<String> algorithm) {

@@ -19,7 +19,6 @@ public class PrimesResult {
     private final PrimesGenerator.PrimesAlgorithm algorithm;
     @JsonIgnore
     private final LocalDateTime createTime;
-
     private String errorMessage;
     private Long processingTimeInNanoSeconds;
 
@@ -55,16 +54,8 @@ public class PrimesResult {
         return resultId.toString();
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    public Long getProcessingTimeInNanoSeconds() {
-        return processingTimeInNanoSeconds;
     }
 
     public void setProcessingTimeInNanoSeconds(Long processingTimeInNanoSeconds) {

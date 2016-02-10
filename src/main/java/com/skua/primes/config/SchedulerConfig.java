@@ -1,6 +1,8 @@
 package com.skua.primes.config;
 
 import com.skua.primes.service.PrimesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -10,6 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class SchedulerConfig {
 
+    private static final Logger log = LoggerFactory.getLogger(SchedulerConfig.class);
+
     @Autowired
     private PrimesService primesService;
 
@@ -17,7 +21,8 @@ public class SchedulerConfig {
      * Run every 15 min.
      */
     @Scheduled(cron = "0 0/15 * * * *")
-    public void triggerPendingTasks() throws Exception {
-        this.primesService.pruneCache(30L);
+    public void triggerPrimesCachePrune() throws Exception {
+        this.primesService.pruneCacheOlderThanInterval(30L);
+        log.info("Primes Cache Pruned Older Than 30 Min");
     }
 }

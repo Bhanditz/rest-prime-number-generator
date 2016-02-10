@@ -48,10 +48,10 @@ public class PrimesServiceImpl implements PrimesService {
     * Remove objects which are older than given interval
     * */
     @Override
-    public void pruneCache(long interval) {
+    public void pruneCacheOlderThanInterval(long intervalInMinutes) {
         resultCache.values()
                 .stream()
-                .filter(p -> p.getCreateTime().compareTo(LocalDateTime.now().minusMinutes(interval)) > 0)
+                .filter(p -> p.getCreateTime().compareTo(LocalDateTime.now().minusMinutes(intervalInMinutes)) > 0)
                 .forEach(k -> resultCache.remove(k));
     }
 

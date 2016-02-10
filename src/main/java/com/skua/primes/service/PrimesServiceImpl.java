@@ -3,6 +3,8 @@ package com.skua.primes.service;
 import com.skua.primes.domain.PrimesResult;
 import com.skua.primes.service.primesgenerator.PrimesGenerator;
 import com.skua.primes.service.primesgenerator.PrimesGeneratorHarness;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PrimesServiceImpl implements PrimesService {
+    private static final Logger log = LoggerFactory.getLogger(PrimesServiceImpl.class);
 
     Map<String, PrimesResult> resultCache = new HashMap<>();
 
@@ -52,8 +55,10 @@ public class PrimesServiceImpl implements PrimesService {
         resultCache.values()
                 .stream()
                 .filter(p -> p.getCreateTime().compareTo(LocalDateTime.now().minusMinutes(intervalInMinutes)) > 0)
-                .map(PrimesResult::getResultId)
-                .forEach(k -> resultCache.remove(k));
+                .forEach(k -> {
+                    log.info("Removing Key Created At {}", k.getCreateTime());
+                    resultCache.remove(k.getResultId());
+                });
     }
 
     private PrimesResult validatePrimesInput(String upperLimit, Optional<String> algorithm) {

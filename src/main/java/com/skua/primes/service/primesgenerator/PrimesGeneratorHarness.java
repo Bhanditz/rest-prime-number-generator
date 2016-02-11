@@ -1,6 +1,7 @@
 package com.skua.primes.service.primesgenerator;
 
 import com.skua.primes.domain.PrimesResult;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,15 @@ public class PrimesGeneratorHarness {
             case PARALLEL_STREAM:
                 primesGenerator = new ParallelStreamPrimesGenerator(upperLimit);
                 break;
+            case ERATOSTHENES_SIEVE:
+                if (upperLimit > Integer.MAX_VALUE - 1) {
+                    throw new IllegalArgumentException("Upper Limit has to lower than Integer Max Value for Sieve Algorithm");
+                }
+                primesGenerator = new SieveOfEratosthenesPrimesGenerator(upperLimit.intValue());
+                break;
+
         }
+        log.info("Triggering Prime Generation For {} Using {}", upperLimit, algorithm);
         return primesGenerator.generatePrimes();
     }
 

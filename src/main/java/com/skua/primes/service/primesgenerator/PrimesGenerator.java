@@ -8,6 +8,6 @@ public interface PrimesGenerator {
     Long getUpperLimit();
 
     enum PrimesAlgorithm {
-        FORK_JOIN, ITERATIVE, PARALLEL_STREAM, STREAM;
+        FORK_JOIN, ITERATIVE, PARALLEL_STREAM, STREAM, ERATOSTHENES_SIEVE;
     }
 }

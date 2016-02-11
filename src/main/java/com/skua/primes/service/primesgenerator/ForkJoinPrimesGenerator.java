@@ -11,7 +11,7 @@ import java.util.stream.LongStream;
 class ForkJoinPrimesGenerator extends RecursiveTask<List<Long>> implements PrimesGenerator {
     private static final Logger log = LoggerFactory.getLogger(ForkJoinPrimesGenerator.class);
 
-    public static final long THRESHOLD = 1000;
+    public static final long THRESHOLD = 4000;
 
     private final Long upperLimit;
     private final Long lowerLimit;

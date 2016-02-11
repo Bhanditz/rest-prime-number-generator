@@ -47,7 +47,7 @@ public class PrimesServiceImplTest {
     }
 
     @Test(expected = NumberFormatException.class)
-    public void testGeneratePrimeOnAboveUpperBound() throws Exception {
+    public void testGeneratePrimeOnBreachOfUpperBound() throws Exception {
         doNothing().when(primesGeneratorHarness).queueForProcessing(null);
         this.primesService.generatePrime("100000000000000000000000000000000000000000000", Optional.empty());
     }

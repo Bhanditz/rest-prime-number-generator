@@ -22,7 +22,7 @@ public class SchedulerConfig {
      */
     @Scheduled(cron = "0 0/15 * * * *")
     public void triggerPrimesCachePrune() throws Exception {
-        this.primesService.pruneCacheOlderThanInterval(30L);
-        log.info("Primes Cache Pruned Older Than 30 Min");
+        this.primesService.pruneCacheOlderThanInterval(180L);
+        log.info("Primes Cache Pruned Older Than 180 Min");
     }
 }

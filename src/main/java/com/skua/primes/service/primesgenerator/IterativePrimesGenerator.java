@@ -28,7 +28,7 @@ class IterativePrimesGenerator implements PrimesGenerator {
         for (long current = lowerLimit; current <= upperLimit; current++) {
             long sqrRoot = (long) Math.sqrt(current);
             boolean isPrime = true;
-            for (long i = lowerLimit; i <= sqrRoot; i++) {
+            for (long i = 2L; i <= sqrRoot; i++) {
                 if (current % i == 0) {
                     isPrime = false;
                 }

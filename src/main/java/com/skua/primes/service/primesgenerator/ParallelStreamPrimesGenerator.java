@@ -35,7 +35,7 @@ class ParallelStreamPrimesGenerator implements PrimesGenerator {
 
     private boolean isPrime(long x) {
         return LongStream
-                .rangeClosed(lowerLimit, (long) (Math.sqrt(x)))
+                .rangeClosed(2L, (long) (Math.sqrt(x)))
                 .parallel()
                 .allMatch(n -> x % n != 0);
     }

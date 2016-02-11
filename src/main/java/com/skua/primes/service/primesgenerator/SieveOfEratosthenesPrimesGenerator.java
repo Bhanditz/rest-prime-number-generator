@@ -26,7 +26,6 @@ public class SieveOfEratosthenesPrimesGenerator implements PrimesGenerator {
     @Override
     public List<Long> generatePrimes() {
         List<Long> primes = new ArrayList<>();
-
         boolean[] isComposite = new boolean[upperLimit + 1]; // limit + 1 because we won't use '0'th index of the array
         isComposite[1] = true;
 

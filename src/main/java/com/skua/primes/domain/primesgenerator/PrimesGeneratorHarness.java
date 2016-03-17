@@ -1,7 +1,6 @@
-package com.skua.primes.service.primesgenerator;
+package com.skua.primes.domain.primesgenerator;
 
 import com.skua.primes.domain.PrimesResult;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -34,7 +33,7 @@ public class PrimesGeneratorHarness {
         log.info("Initialized PrimesGeneratorHarness");
     }
 
-    protected List<Long> generatePrimes(Long upperLimit, PrimesGenerator.PrimesAlgorithm algorithm) {
+    protected List<Long> generatePrimes(Long upperLimit, PrimesGenerator.PrimesStrategy algorithm) {
         PrimesGenerator primesGenerator = null;
         switch (algorithm) {
             case FORK_JOIN:
@@ -77,7 +76,7 @@ public class PrimesGeneratorHarness {
                     primesResult = sharedQueue.take();
                     log.info("Processing {}", primesResult);
                     Long startTime = System.nanoTime();
-                    List<Long> primes = generatePrimes(primesResult.getUpperLimit(), primesResult.getAlgorithm());
+                    List<Long> primes = generatePrimes(primesResult.getUpperLimit(), primesResult.getPrimesStrategy());
                     Long endTime = System.nanoTime();
                     primesResult.addAll(primes);
                     primesResult.setProcessingTimeInNanoSeconds(endTime - startTime);

@@ -3,7 +3,7 @@ package com.skua.primes.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.MoreObjects;
-import com.skua.primes.service.primesgenerator.PrimesGenerator;
+import com.skua.primes.domain.primesgenerator.PrimesGenerator.PrimesStrategy;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,21 +16,21 @@ public class PrimesResult {
     private final UUID resultId;
     private final Long upperLimit;
     private final List<Long> primes;
-    private final PrimesGenerator.PrimesAlgorithm algorithm;
+    private final PrimesStrategy primesStrategy;
     @JsonIgnore
     private final LocalDateTime createTime;
     private String errorMessage;
     private Long processingTimeInNanoSeconds;
 
     public PrimesResult(Long upperLimit) {
-        this(upperLimit, PrimesGenerator.PrimesAlgorithm.STREAM);
+        this(upperLimit, PrimesStrategy.STREAM);
     }
 
-    public PrimesResult(Long upperLimit, PrimesGenerator.PrimesAlgorithm algorithm) {
+    public PrimesResult(Long upperLimit, PrimesStrategy primesStrategy) {
         this.resultId = UUID.randomUUID();
         this.upperLimit = upperLimit;
         this.primes = new ArrayList<>();
-        this.algorithm = algorithm;
+        this.primesStrategy = primesStrategy;
         createTime = LocalDateTime.now();
     }
 
@@ -62,8 +62,8 @@ public class PrimesResult {
         this.processingTimeInNanoSeconds = processingTimeInNanoSeconds;
     }
 
-    public PrimesGenerator.PrimesAlgorithm getAlgorithm() {
-        return algorithm;
+    public PrimesStrategy getPrimesStrategy() {
+        return primesStrategy;
     }
 
     public LocalDateTime getCreateTime() {
@@ -76,7 +76,7 @@ public class PrimesResult {
                 .add("resultId", resultId)
                 .add("upperLimit", upperLimit)
                 .add("primes", primes)
-                .add("algorithm", algorithm)
+                .add("primesStrategy", primesStrategy)
                 .add("errorMessage", errorMessage)
                 .add("processingTimeInNanoSeconds", processingTimeInNanoSeconds)
                 .toString();

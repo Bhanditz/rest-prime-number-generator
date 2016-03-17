@@ -1,4 +1,4 @@
-package com.skua.primes.service.primesgenerator;
+package com.skua.primes.domain.primesgenerator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,8 @@
 package com.skua.primes.service;
 
 import com.skua.primes.domain.PrimesResult;
-import com.skua.primes.service.primesgenerator.PrimesGeneratorHarness;
+import com.skua.primes.domain.primesgenerator.PrimesGenerator.PrimesStrategy;
+import com.skua.primes.domain.primesgenerator.PrimesGeneratorHarness;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ public class PrimesServiceImplTest {
     @Test
     public void testGetPrimesResult() throws Exception {
         doNothing().when(primesGeneratorHarness).queueForProcessing(null);
-        PrimesResult primesResult = this.primesService.generatePrime("100", Optional.of("STREAM"));
+        PrimesResult primesResult = this.primesService.generatePrime(100L, Optional.of(PrimesStrategy.STREAM));
         Optional<PrimesResult> primesResultOptional = this.primesService.getPrimesResult(primesResult.getResultId());
         assertTrue("Prime Result must be present", primesResultOptional.isPresent());
         assertTrue("Prime Result Request Id must match", primesResultOptional.get().getResultId().equals(primesResult.getResultId()));
@@ -35,7 +36,7 @@ public class PrimesServiceImplTest {
     @Test
     public void testGetPrimesResults() throws Exception {
         doNothing().when(primesGeneratorHarness).queueForProcessing(null);
-        PrimesResult primesResult = this.primesService.generatePrime("100", Optional.of("STREAM"));
+        PrimesResult primesResult = this.primesService.generatePrime(100L, Optional.of(PrimesStrategy.STREAM));
         List<PrimesResult> primesResults = this.primesService.getPrimesResults();
         assertTrue("Primes Result List must contain successful Requests", primesResults.contains(primesResult));
     }
@@ -43,30 +44,12 @@ public class PrimesServiceImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void testGeneratePrimeOnNegativeInput() throws Exception {
         doNothing().when(primesGeneratorHarness).queueForProcessing(null);
-        this.primesService.generatePrime("-1", Optional.empty());
-    }
-
-    @Test(expected = NumberFormatException.class)
-    public void testGeneratePrimeOnBreachOfUpperBound() throws Exception {
-        doNothing().when(primesGeneratorHarness).queueForProcessing(null);
-        this.primesService.generatePrime("100000000000000000000000000000000000000000000", Optional.empty());
-    }
-
-    @Test(expected = NumberFormatException.class)
-    public void testGeneratePrimeOnInvalidCharacterInput() throws Exception {
-        doNothing().when(primesGeneratorHarness).queueForProcessing(null);
-        this.primesService.generatePrime("1+w", Optional.empty());
-    }
-
-    @Test(expected = NumberFormatException.class)
-    public void testGeneratePrimeOnEmptyInput() throws Exception {
-        doNothing().when(primesGeneratorHarness).queueForProcessing(null);
-        this.primesService.generatePrime("", Optional.empty());
+        this.primesService.generatePrime(-1L, Optional.empty());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testGeneratePrimeOnInvalidAlgorithm() throws Exception {
+    public void testGeneratePrimeOnZeroInput() throws Exception {
         doNothing().when(primesGeneratorHarness).queueForProcessing(null);
-        this.primesService.generatePrime("2", Optional.of("DOES_NOT_EXIST"));
+        this.primesService.generatePrime(0L, Optional.empty());
     }
 }

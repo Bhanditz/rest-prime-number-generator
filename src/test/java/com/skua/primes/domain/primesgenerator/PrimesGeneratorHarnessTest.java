@@ -1,4 +1,4 @@
-package com.skua.primes.service.primesgenerator;
+package com.skua.primes.domain.primesgenerator;
 
 
 import org.mockito.InjectMocks;
@@ -25,35 +25,35 @@ public class PrimesGeneratorHarnessTest {
 
     @Test(dataProvider = "primesGeneratorRequest")
     public void testGeneratePrimesUsingIterativeMethod(Long upperLimit, List<Long> list) throws Exception {
-        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesAlgorithm.ITERATIVE);
+        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesStrategy.ITERATIVE);
         assertTrue("Input List Content Must Match Iterative Method Generated Primes", list.containsAll(primeResults));
         assertTrue("Iterative Method Generated Primes Must match Input List", primeResults.containsAll(list));
     }
 
     @Test(dataProvider = "primesGeneratorRequest")
     public void testGeneratePrimesUsingStreamMethod(Long upperLimit, List<Long> list) throws Exception {
-        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesAlgorithm.STREAM);
+        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesStrategy.STREAM);
         assertTrue("Input List Content Must Match Stream Method Generated Primes", list.containsAll(primeResults));
         assertTrue("Stream Method Generated Primes Must match Input List", primeResults.containsAll(list));
     }
 
     @Test(dataProvider = "primesGeneratorRequest")
     public void testGeneratePrimesUsingParallelStreamMethod(Long upperLimit, List<Long> list) throws Exception {
-        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesAlgorithm.PARALLEL_STREAM);
+        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesStrategy.PARALLEL_STREAM);
         assertTrue("Input List Content Must Match Parallel Stream Method Generated Primes", list.containsAll(primeResults));
         assertTrue("Parallel Stream Generated Primes Must match Input List", primeResults.containsAll(list));
     }
 
     @Test(dataProvider = "primesGeneratorRequest")
     public void testGeneratePrimesUsingForkJoinMethod(Long upperLimit, List<Long> list) throws Exception {
-        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesAlgorithm.FORK_JOIN);
+        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesStrategy.FORK_JOIN);
         assertTrue("Input List Content Must Match Fork Join Method Generated Primes", list.containsAll(primeResults));
         assertTrue("Fork Join Method Generated Primes Must match Input List", primeResults.containsAll(list));
     }
 
     @Test(dataProvider = "primesGeneratorRequest")
     public void testGeneratePrimesUsingSieveOfEratosthenesMethod(Long upperLimit, List<Long> list) throws Exception {
-        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesAlgorithm.FORK_JOIN);
+        List<Long> primeResults = primesGeneratorHarness.generatePrimes(upperLimit, PrimesGenerator.PrimesStrategy.FORK_JOIN);
         assertTrue("Input List Content Must Match Sieve Of Eratosthenes Method Generated Primes", list.containsAll(primeResults));
         assertTrue("Sieve Of Eratosthenes Method Generated Primes Must match Input List", primeResults.containsAll(list));
     }

@@ -1,10 +1,13 @@
 package com.skua.primes.api.controller;
 
+import com.codahale.metrics.annotation.Timed;
 import com.skua.primes.domain.PrimesResult;
+import com.skua.primes.domain.primesgenerator.PrimesGenerator.PrimesStrategy;
 import com.skua.primes.service.PrimesService;
-import com.skua.primes.service.primesgenerator.PrimesGenerator;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,18 +26,29 @@ public class PrimesController {
     @Autowired
     private PrimesService primesService;
 
-    @RequestMapping(value = "/algorithm/default/value/{upperLimit}", method = RequestMethod.GET)
-    public ResponseEntity<PrimesResult> generatePrimesWithDefaultAlgorithm(@PathVariable("upperLimit") String upperLimit) {
+    @RequestMapping(value = "/strategy/default/{upperLimit:\\d+}", method = RequestMethod.GET)
+    @Timed
+    public ResponseEntity<PrimesResult> generatePrimesWithDefaultStrategy(@ApiParam(value = "the upper limit of primes to be generated")
+                                                                          @PathVariable("upperLimit") Long upperLimit) {
         return new ResponseEntity<>(this.primesService.generatePrime(upperLimit, Optional.empty()), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/algorithm/{algorithmName}/value/{upperLimit}", method = RequestMethod.GET)
-    public ResponseEntity<PrimesResult> generatePrimes(@PathVariable("algorithmName") String algorithmName, @PathVariable("upperLimit") String upperLimit) {
-        return new ResponseEntity<>(this.primesService.generatePrime(upperLimit, Optional.of(algorithmName.toUpperCase())), HttpStatus.OK);
+    @RequestMapping(value = "/strategy/{strategyName}/{upperLimit:\\d+}", method = RequestMethod.GET)
+    @Timed
+    public ResponseEntity<PrimesResult> generatePrimes(
+            @ApiParam(value = "the strategy to use.")
+            @PathVariable("strategyName") PrimesStrategy strategyName,
+
+            @ApiParam(value = "the upper limit of primes to be generated")
+            @PathVariable("upperLimit") Long upperLimit) {
+        return new ResponseEntity<>(this.primesService.generatePrime(upperLimit, Optional.of(strategyName)), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/find/{resultId}", method = RequestMethod.GET)
-    public ResponseEntity<PrimesResult> getGeneratedPrimesById(@PathVariable("resultId") String resultId) {
+    @RequestMapping(value = "/{uuid}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<PrimesResult> getGeneratedPrimesById(@PathVariable("uuid") String resultId) {
         Optional<PrimesResult> primesResultOptional = this.primesService.getPrimesResult(resultId);
         PrimesResult primesResult;
         if (!primesResultOptional.isPresent()) {
@@ -46,16 +60,21 @@ public class PrimesController {
         return new ResponseEntity<>(primesResult, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.GET)
-    public ResponseEntity<List<PrimesResult>> getGeneratedPrimes() {
+    @RequestMapping(method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<PrimesResult>> getAllGeneratedPrimes() {
         return new ResponseEntity<>(this.primesService.getPrimesResults(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/algorithmNames", method = RequestMethod.GET)
-    public ResponseEntity<List<String>> getPrimesAlgorithmNames() {
+    @RequestMapping(value = "/strategyNames",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<String>> getPrimesStrategyNames() {
         return new ResponseEntity<>(
-                Stream.of(PrimesGenerator.PrimesAlgorithm.values())
-                        .map(PrimesGenerator.PrimesAlgorithm::name)
+                Stream.of(PrimesStrategy.values())
+                        .map(PrimesStrategy::name)
                         .collect(Collectors.toList())
                 , HttpStatus.OK);
     }

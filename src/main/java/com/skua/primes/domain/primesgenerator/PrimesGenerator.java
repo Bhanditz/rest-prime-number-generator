@@ -1,4 +1,4 @@
-package com.skua.primes.service.primesgenerator;
+package com.skua.primes.domain.primesgenerator;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ public interface PrimesGenerator {
 
     Long getUpperLimit();
 
-    enum PrimesAlgorithm {
+    enum PrimesStrategy {
         FORK_JOIN, ITERATIVE, PARALLEL_STREAM, STREAM, ERATOSTHENES_SIEVE;
     }
 }
